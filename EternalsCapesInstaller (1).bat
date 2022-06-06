@@ -2,63 +2,62 @@
 SETLOCAL
 SET "HOSTS_FILE=%WinDir%\System32\drivers\etc\hosts"
 SET "TEMP_HOSTS_FILE=%TEMP%\%RANDOM%__hosts"
+GOTO start
+:start
 
-GOTO intro
-:intro
-
-echo   ______ _______ ______ _____  _   _          _       _____    _____          _____  ______  _____ 
-echo  |  ____|__   __|  ____|  __ \| \ | |   /\   | |     / ____|  / ____|   /\   |  __ \|  ____|/ ____|
-echo  | |__     | |  | |__  | |__) |  \| |  /  \  | |    | (___   | |       /  \  | |__) | |__  | (___  
-echo  |  __|    | |  |  __| |  _  /| . ` | / /\ \ | |     \___ \  | |      / /\ \ |  ___/|  __|  \___ \ 
-echo  | |____   | |  | |____| | \ \| |\  |/ ____ \| |____ ____) | | |____ / ____ \| |    | |____ ____) |
-echo  |______|  |_|  |______|_|  \_\_| \_/_/    \_\______|_____/   \_____/_/    \_\_|    |______|_____/ 
+echo   ______ _______ ______ _____  _   _          _       _____  	  _____          _____  ______  _____ 
+echo  |  ____|__   __|  ____|  __ \| \ | |   /\   | |     / ____| 	 / ____|   /\   |  __ \|  ____|/ ____|
+echo  | |__     | |  | |__  | |__) |  \| |  /  \  | |    | (___   	| |       /  \  | |__) | |__  | (___  
+echo  |  __|    | |  |  __| |  _  /| . ` | / /\ \ | |     \___ \  	| |      / /\ \ |  ___/|  __|  \___ \ 
+echo  | |____   | |  | |____| | \ \| |\  |/ ____ \| |____ ____) | 	| |____ / ____ \| |    | |____ ____) |
+echo  |______|  |_|  |______|_|  \_\_| \_/_/    \_\______|_____/  	 \_____/_/    \_\_|    |______|_____/ 
                                                                                                    
                                                                                                   
-    GOTO permissions
+GOTO checkperms
 
 :options
 
-    ECHO Type one of the following (use the number)
-    ECHO 1) Install (Install Eternals Capes on this computer)
-    ECHO 2) Uninstall (Remove Eternals Capes from the computer)
-    ECHO 3) Exit (Close this installer)
+    ECHO Choose an action. (write the coresponding number)
+    ECHO 1) Install (Install Eternals Capes)
+    ECHO 2) UnInstall (Remove Eternals Capes)
+    ECHO 3) Exit
     SET /p choice=Type the number representing an option:
 
     if '%choice%'=='' (
-        ECHO "%choice%" is a valid option, please try again.
+        ECHO "%choice%" is not a valid option, try again.
         GOTO options
     )
     if '%choice%'=='1' GOTO install
     if '%choice%'=='2' GOTO uninstall
     if '%choice%'=='3' EXIT
 
-:permissions
+:checkperms
 
     REG ADD HKLM /F>nul 2>&1
     if %ERRORLEVEL% == 0 (
         GOTO options
     ) else (
-        ECHO ---------------------------------------------------------
+        ECHO 
         ECHO NO ADMIN PERMISSIONS
-        ECHO ---------------------------------------------------------
-        ECHO You did not run this with Admin permissions. Please run  
-        ECHO this program as admin. To do so right click this file and
-        ECHO click "Run as administrator"
+        ECHO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        ECHO Please run this installer again with admin permisions.
+        ECHO To do it, right click on this file and click on 
+        ECHO "Run as administrator"
         PAUSE
         EXIT
     )
 
 :install
-    FINDSTR /V "174.138.102.12 s.optifine.net # ADDED BY ETERNALS CAPES" "%HOSTS_FILE%" > "%TEMP_HOSTS_FILE%"
-    ECHO 174.138.102.12 s.optifine.net # ADDED BY MINECRAFT CAPES >> "%TEMP_HOSTS_FILE%"
+    FINDSTR /V "129.151.148.92 s.optifine.net" "%HOSTS_FILE%" > "%TEMP_HOSTS_FILE%"
+    ECHO 129.151.148.92 s.optifine.net >> "%TEMP_HOSTS_FILE%"
     COPY /b/v/y "%TEMP_HOSTS_FILE%" "%HOSTS_FILE%"
-    ECHO Install Complete
+    ECHO Finished installing.
     PAUSE
     EXIT
 
 :uninstall
-    FINDSTR /V "174.138.102.12 s.optifine.net # ADDED BY ETERNALS CAPES" "%HOSTS_FILE%" > "%TEMP_HOSTS_FILE%"
+    FINDSTR /V "129.151.148.92 s.optifine.net" "%HOSTS_FILE%" > "%TEMP_HOSTS_FILE%"
     COPY /b/v/y "%TEMP_HOSTS_FILE%" "%HOSTS_FILE%"
-    ECHO UnInstall Complete
+    ECHO Finished uninstalling.
     PAUSE
     EXIT
